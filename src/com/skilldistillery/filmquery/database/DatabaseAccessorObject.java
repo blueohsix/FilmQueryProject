@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.skilldistillery.filmquery.entities.Actor;
@@ -37,7 +38,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			e.printStackTrace();
 		}
 
-		return null;
+		return film;
 	}
 
 	public Actor findActorById(int actorId) throws SQLException {
@@ -60,26 +61,31 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		return actor;
 	}
 
-
 	@Override
 	public List<Actor> findActorsByFilmId(int filmId) throws SQLException {
-		Actor actor = null;
+		
+		List<Actor> actors = new ArrayList<Actor>();
+		
 		Connection conn = DriverManager.getConnection(URL, userName, password);
-		String sql = "SELECT id, first_name, last_name FROM actor WHERE film.id = ?"; //needs JOIN
+		String sql = "mysql> select * from film_actor join actor on film_actor.actor_id = actor.id where film_id = ?"; // needs
+																														// JOIN
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, filmId);
 		ResultSet actorResult = stmt.executeQuery();
+		
 		while (actorResult.next()) {
-			actor = new Actor(filmId, sql, sql); // Create the object
+			Actor actor = new Actor();
 			// Here is our mapping of query columns to our object fields:
 			actor.setId(actorResult.getInt("id"));
 			actor.setFirstName(actorResult.getString("first_name"));
 			actor.setLastName(actorResult.getString("last_name"));
+			actors.add(actor);
+			
 		}
 		actorResult.close();
 		stmt.close();
 		conn.close();
-		return (List<Actor>) actor;
+		return actors;
 	}
 
 }

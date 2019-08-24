@@ -1,11 +1,14 @@
 package com.skilldistillery.filmquery.entities;
 
-import java.util.List;
 
-public class Actor implements List<Actor> {
+public class Actor{
 	private int id;
 	private String firstName;
 	private String lastName;
+	
+	public Actor() {
+		
+	}
 
 	public Actor(int id, String firstName, String lastName) {
 		super();
