@@ -36,9 +36,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			String sql = "select id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost,"
 					+ " rating, special_features from film where film.id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1,filmId);
+			stmt.setInt(1, filmId);
 			ResultSet rs = stmt.executeQuery();
-			
+
 			while (rs.next()) {
 				int id = rs.getInt("film.id");
 				String title = rs.getString("title");
@@ -48,7 +48,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				double rentalDuration = rs.getDouble("rental_duration");
 				double rentalRate = rs.getDouble("rental_rate");
 				int length = rs.getInt("length");
-				double replacementCost =rs.getDouble("replacement_cost");
+				double replacementCost = rs.getDouble("replacement_cost");
 				String rating = rs.getString("rating");
 				String specialFeatures = rs.getString("special_features");
 				film = new Film(id, title, description, releaseYear, languageId, rentalDuration, rentalRate, length,
@@ -72,7 +72,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		stmt.setInt(1, actorId);
 		ResultSet actorResult = stmt.executeQuery();
 		while (actorResult.next()) {
-			actor = new Actor(actorId, sql, sql); 
+			actor = new Actor(actorId, sql, sql);
 			actor.setId(actorResult.getInt("id"));
 			actor.setFirstName(actorResult.getString("first_name"));
 			actor.setLastName(actorResult.getString("last_name"));
@@ -85,46 +85,42 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public List<Actor> findActorsByFilmId(int filmId) throws SQLException {
-		
+
 		List<Actor> actors = new ArrayList<Actor>();
-		
+
 		Connection conn = DriverManager.getConnection(URL, userName, password);
-		String sql = "SELECT actor.id, actor.first_name, actor.last_name" + 
-				"  FROM film " + 
-				"  JOIN film_actor " + 
-				"  ON film.id = film_actor.film_id " + 
-				"  JOIN actor " + 
-				"  ON actor.id = film_actor.actor_id  " + 
-				"  WHERE film.id = ?"; 
-		
+		String sql = "SELECT actor.id, actor.first_name, actor.last_name" + "  FROM film " + "  JOIN film_actor "
+				+ "  ON film.id = film_actor.film_id " + "  JOIN actor " + "  ON actor.id = film_actor.actor_id  "
+				+ "  WHERE film.id = ?";
+
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, filmId);
 		ResultSet actorResult = stmt.executeQuery();
-		
+
 		while (actorResult.next()) {
 			Actor actor = new Actor();
 			actor.setId(actorResult.getInt("id"));
 			actor.setFirstName(actorResult.getString("first_name"));
 			actor.setLastName(actorResult.getString("last_name"));
 			actors.add(actor);
-			
+
 		}
 		actorResult.close();
 		stmt.close();
 		conn.close();
 		return actors;
 	}
-	
+
 	@Override
 	public void findFilmbyKeyword(String keyword) throws SQLException {
 		List<Film> films = new ArrayList<Film>();
 		Connection conn = DriverManager.getConnection(URL, userName, password);
-		String sql =  "select title, description, release_year, rating from film where title like ? or description like ?";
+		String sql = "select title, description, release_year, rating from film where title like ? or description like ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, ("%"+keyword+"%"));
-		stmt.setString(2, ("%"+keyword+"%"));
+		stmt.setString(1, ("%" + keyword + "%"));
+		stmt.setString(2, ("%" + keyword + "%"));
 		ResultSet filmResult = stmt.executeQuery();
-		
+
 		while (filmResult.next()) {
 			Film film = new Film();
 
@@ -133,13 +129,18 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setReleaseYear(filmResult.getInt("release_year"));
 			film.setRating(filmResult.getString("rating"));
 			films.add(film);
-						
+
 		}
 		filmResult.close();
 		stmt.close();
 		conn.close();
-		for (Film film : films) {
-			System.out.print(film);
+		if (films.size() == 0) {
+			System.out.println("No results found");
+			return;
+		} else {
+			for (Film film : films) {
+				System.out.print(film);
+			}
 		}
 	}
 

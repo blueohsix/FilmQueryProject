@@ -39,39 +39,50 @@ public class FilmQueryApp {
 	}
 
 	private void startUserInterface(Scanner input) throws SQLException {
-		System.out.println("\n");
-		System.out.println("Enter \"1\" to look up a movie by its ID#");
-		System.out.println("Enter \"2\" to look up movie by a keyword");
-		System.out.println("Enter \"3\" to exit the application.");
 
-		int choice = input.nextInt();
-		while ( choice != 3 )
-			switch (choice) {
-			case 1:
-				System.out.println("Please enter a movie's ID# to look it up!");
+		int choice = 0;
+		do {
+			System.out.println("\n");
+			System.out.println("Enter \"1\" to look up a movie by its ID#");
+			System.out.println("Enter \"2\" to look up movie by a keyword");
+			System.out.println("Enter \"3\" to exit the application.");
+			try {
+				choice = input.nextInt();
+				switch (choice) {
+				case 1:
+					System.out.println("Please enter a movie's ID# to look it up!");
 					int id = input.nextInt();
-					if(id > 1000 || id < 1) {
-						System.out.println("Our inventory contains 1000 titles. Try again.");
+					if (id > 1000 || id < 1) {
+						System.out.println("Our inventory contains 1000 titles, 1-1000. Try again.");
+					} else {
+						System.out.println(db.findFilmById(id));
 					}
-					else {
-					System.out.println(db.findFilmById(id));
-					}
-					startUserInterface(input);
-				break;
-			case 2:
-				System.out.println("Please enter a keyword to look up a movie");
-				String keyword = input.next();
-				
-				db.findFilmbyKeyword(keyword);
-				startUserInterface(input);
 
-				break;
-				
-			case 3:
-				System.out.println("Exiting application");
-				break;
-			default:
-				System.out.println("Please enter a valid option");
+					break;
+				case 2:
+					System.out.println("Please enter a keyword to look up a movie");
+					try {
+						String keyword = input.next();
+						db.findFilmbyKeyword(keyword);
+						input.nextLine();
+					} catch (Exception e) {
+						System.out.println("Please enter a keyword");
+					}
+					break;
+
+				case 3:
+					System.out.println("Exiting application");
+
+					break;
+				default:
+					System.out.println("Please enter a valid option (extreme ints)");
+					break;
+				}
+			} catch (Exception e1) {
+				System.out.println("Please enter a valid option (not int)");
+				input.nextLine();
 			}
+		} while (choice != 3);
+		System.out.println("success");
 	}
 }
