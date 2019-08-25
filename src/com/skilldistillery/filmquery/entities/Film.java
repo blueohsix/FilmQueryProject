@@ -12,6 +12,18 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
+	
+	public Film() {
+		
+	}
+
+	public Film(String title, String rating, String description, int releaseYear) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.rating = rating;
+		this.releaseYear = releaseYear;
+	}
 
 	public Film(int id, String title, String description, int releaseYear, int languageId, double rentalDuration,
 			double rentalRate, double length, double replacementCost, String rating, String specialFeatures) {
@@ -27,7 +39,6 @@ public class Film {
 		this.replacementCost = replacementCost;
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
-
 	}
 
 	public int getId() {
@@ -118,12 +129,15 @@ public class Film {
 		this.specialFeatures = specialFeatures;
 	}
 
+//	@Override
+//	public String toString() {
+//		return "Film title = " + title + "\nDescription = " + description + "\nRelease Year = " + releaseYear
+//				+ "\nRental Duration = " + rentalDuration + "\nRental Rate = " + rentalRate + "\nLength = " + length
+//				+ "\nReplacement Cost = " + replacementCost + "\nRating = " + rating + "\nSpecial Features = " + specialFeatures;
+//	}
 	@Override
 	public String toString() {
-		return "Film [title=" + title + ", description=" + description + ", releaseYear=" + releaseYear
-				+ ", rentalDuration=" + rentalDuration + ", rentalRate=" + rentalRate + ", length=" + length
-				+ ", replacementCost=" + replacementCost + ", rating=" + rating + ", specialFeatures=" + specialFeatures
-				+ "]";
+		return "\n" + title + ", "  + releaseYear + ", Rated " + rating + "\nSummary: " +  description  + "\n";
 	}
 
 	@Override

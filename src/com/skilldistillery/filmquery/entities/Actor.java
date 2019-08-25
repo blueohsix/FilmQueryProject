@@ -43,8 +43,10 @@ public class Actor{
 
 	@Override
 	public String toString() {
-		return "Actor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+		
+		return "\n" + firstName + " " + lastName;
 	}
+
 
 	@Override
 	public int hashCode() {
@@ -55,6 +57,7 @@ public class Actor{
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
