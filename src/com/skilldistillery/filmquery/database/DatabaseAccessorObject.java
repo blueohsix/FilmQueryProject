@@ -112,10 +112,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	}
 
 	@Override
-	public void findFilmbyKeyword(String keyword) throws SQLException {
+	public List<Film> findFilmbyKeyword(String keyword) throws SQLException {
 		List<Film> films = new ArrayList<Film>();
 		Connection conn = DriverManager.getConnection(URL, userName, password);
-		String sql = "select title, description, release_year, rating from film where title like ? or description like ?";
+		String sql = "select title, description, release_year, rating from film where title like ? "
+				+ "or description like ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, ("%" + keyword + "%"));
 		stmt.setString(2, ("%" + keyword + "%"));
@@ -134,14 +135,28 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		filmResult.close();
 		stmt.close();
 		conn.close();
+		
 		if (films.size() == 0) {
 			System.out.println("No results found");
-			return;
-		} else {
-			for (Film film : films) {
-				System.out.print(film);
-			}
 		}
+		return films; 
+		
+//		if (films.size() == 0) {
+//			System.out.println("No results found");
+//			return;
+//		} else {
+//			for (Film film : films) {
+//				System.out.print(film);
+		
+			/* Wanted to use a sysout instead of a return because of output formatting. It seems that the instructions 
+			 * don't allow this though.   
+			 * Returning a list of films places [ ] around the entire list and modifiying the 
+			 * toString would not make these go away. Using a sysout inside this method and not having 
+			 * a return type removes the [ ].
+			 * If you'd like to beautify this output: comment the lines 140-143, uncomment 145-150, 
+			 * change the return type to void, then adjust the return type on line 13 in DatabaseAccessor.java */
+//			}
+//		}
 	}
 
 }
