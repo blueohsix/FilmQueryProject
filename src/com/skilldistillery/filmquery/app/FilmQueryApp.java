@@ -1,12 +1,12 @@
 package com.skilldistillery.filmquery.app;
 
 import java.sql.SQLException;
-import java.util.List;
+//import java.util.List;
 import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
-import com.skilldistillery.filmquery.entities.Actor;
+//import com.skilldistillery.filmquery.entities.Actor;
 
 public class FilmQueryApp {
 
@@ -18,15 +18,15 @@ public class FilmQueryApp {
 		app.launch();
 	}
 
-//	private void test() throws SQLException {
-//		System.out.println(db.findFilmById(57));
+	private void test() throws SQLException {
+		System.out.println(db.findFilmById(57));
 //		List<Actor> actors = db.findActorsByFilmId(57);
 //		System.out.print("\nActors Present: ");
 //				for (Actor actor : actors) {
 //					System.out.print(actor);
 //				}
 //		System.out.println(db.findActorById(2));
-//	}
+	}
 
 	private void launch() throws SQLException {
 		Scanner input = new Scanner(System.in);
@@ -55,8 +55,7 @@ public class FilmQueryApp {
 						System.out.println("Our inventory contains 1000 titles, 1-1000. Try again.");
 					} else {
 						System.out.println(db.findFilmById(id));
-						System.out.println("Actors Present: ");
-						System.out.println(db.findActorsByFilmId(id));
+//						System.out.println("Actors Present: " + db.findActorsByFilmId(id));
 					}
 
 					break;
