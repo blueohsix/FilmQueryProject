@@ -159,12 +159,6 @@ public class Film {
 		
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Film title = " + title + "\nDescription = " + description + "\nRelease Year = " + releaseYear
-//				+ "\nRental Duration = " + rentalDuration + "\nRental Rate = " + rentalRate + "\nLength = " + length
-//				+ "\nReplacement Cost = " + replacementCost + "\nRating = " + rating + "\nSpecial Features = " + specialFeatures;
-//	}
 	@Override
 	public String toString() {
 		List<Actor> actors = new ArrayList<Actor>();

@@ -11,7 +11,6 @@ import java.util.List;
 import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
 
-//TEMPLATE FOR CONNECTING TO A DATABASE
 public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
@@ -158,24 +157,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			System.out.println("No results found");
 		}
 		return films; 
-
-		
-//		if (films.size() == 0) {
-//			System.out.println("No results found");
-//			return;
-//		} else {
-//			for (Film film : films) {
-//				System.out.print(film);
-//			}
-//		}
-		
-			/* Wanted to use a sysout instead of a return because of output formatting. It seems that the instructions 
-			 * don't allow this though.   
-			 * Returning a list of films places [ ] around the entire list and modifiying the 
-			 * toString would not make these go away. Using a sysout inside this method and not having 
-			 * a return type removes the [ ].
-			 * If you'd like to beautify this output: comment the lines 140-143, uncomment 145-150, 
-			 * change the return type to void, then adjust the return type on line 13 in DatabaseAccessor.java */
 	}
 
 }
