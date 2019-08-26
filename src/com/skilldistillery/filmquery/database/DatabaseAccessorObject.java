@@ -30,14 +30,23 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public Film findFilmById(int filmId) {
 		Film film = null;
+		List<Actor> actors = new ArrayList<Actor>();
 
 		try {
 			Connection conn = DriverManager.getConnection(URL, userName, password);
-			String sql = "select id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost,"
-					+ " rating, special_features from film where film.id = ?";
+			String sql = "SELECT film.id, film.title, film.description, film.release_year, film.language_id, "
+			          + "film.rating, actor.first_name, " 
+						+ "actor.last_name, actor.id "
+						+ "FROM film "
+						+ "JOIN film_actor "  
+						+ "ON film.id = film_actor.film_id " 
+						+ "JOIN actor "
+						+ "ON actor.id = film_actor.actor_id "
+						+ "WHERE film.id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 			ResultSet rs = stmt.executeQuery();
+
 
 			while (rs.next()) {
 				int id = rs.getInt("film.id");
@@ -45,14 +54,16 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				String description = rs.getNString("description");
 				int releaseYear = rs.getInt("release_year");
 				int languageId = rs.getInt("language_id");
-				double rentalDuration = rs.getDouble("rental_duration");
-				double rentalRate = rs.getDouble("rental_rate");
-				int length = rs.getInt("length");
-				double replacementCost = rs.getDouble("replacement_cost");
 				String rating = rs.getString("rating");
-				String specialFeatures = rs.getString("special_features");
-				film = new Film(id, title, description, releaseYear, languageId, rentalDuration, rentalRate, length,
-						replacementCost, rating, specialFeatures);
+//				while (rs.next()) {
+//					Actor actor = new Actor();
+//					actor.setId(rs.getInt("id"));
+//					actor.setFirstName(rs.getString("first_name"));
+//					actor.setLastName(rs.getString("last_name"));
+//					actors.add(actor);
+//				}
+
+				film = new Film(id, title, description, releaseYear, languageId, rating);
 			}
 			rs.close();
 			stmt.close();
@@ -60,7 +71,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		
 		return film;
 	}
 
@@ -114,9 +125,13 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public List<Film> findFilmbyKeyword(String keyword) throws SQLException {
 		List<Film> films = new ArrayList<Film>();
+		
 		Connection conn = DriverManager.getConnection(URL, userName, password);
-		String sql = "select title, description, release_year, rating from film where title like ? "
-				+ "or description like ?";
+		String sql = "SELECT film.id, film.title, film.description, film.release_year, film.language_id, "
+					+ "film.rating "
+							+ "FROM film "
+							+ "WHERE title like ? "
+							+ "OR description like ? ";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, ("%" + keyword + "%"));
 		stmt.setString(2, ("%" + keyword + "%"));
@@ -124,13 +139,19 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		while (filmResult.next()) {
 			Film film = new Film();
-
-			film.setTitle(filmResult.getString("title"));
-			film.setDescription(filmResult.getString("description"));
-			film.setReleaseYear(filmResult.getInt("release_year"));
-			film.setRating(filmResult.getString("rating"));
+			film.setId(filmResult.getInt("film.id"));
+			film.setTitle(filmResult.getString("film.title"));
+			film.setDescription(filmResult.getString("film.description"));
+			film.setReleaseYear(filmResult.getInt("film.release_year"));
+			film.setRating(filmResult.getString("film.rating"));
 			films.add(film);
-
+//			while (filmResult.next()) {
+//				Actor actor = new Actor();
+//				actor.setId(filmResult.getInt("actor.id"));
+//				actor.setFirstName(filmResult.getString("actor.first_name"));
+//				actor.setLastName(filmResult.getString("actor.last_name"));
+//				actors.add(actor);
+//			}
 		}
 		filmResult.close();
 		stmt.close();
@@ -147,6 +168,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 //		} else {
 //			for (Film film : films) {
 //				System.out.print(film);
+//			}
+//		}
 		
 			/* Wanted to use a sysout instead of a return because of output formatting. It seems that the instructions 
 			 * don't allow this though.   
@@ -155,8 +178,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			 * a return type removes the [ ].
 			 * If you'd like to beautify this output: comment the lines 140-143, uncomment 145-150, 
 			 * change the return type to void, then adjust the return type on line 13 in DatabaseAccessor.java */
-//			}
-//		}
 	}
 
 }

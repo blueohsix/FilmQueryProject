@@ -1,5 +1,11 @@
 package com.skilldistillery.filmquery.entities;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import com.skilldistillery.filmquery.database.DatabaseAccessor;
+import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
+
 public class Film {
 	private int id;
 	private String title;
@@ -12,15 +18,22 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
-	
+	private List<Actor> actorsString;
+
+	DatabaseAccessor db = new DatabaseAccessorObject();
+
+
 	public Film() {
-		
+
 	}
 
-	public Film(String title, String rating, String description, int releaseYear) {
+	public Film(int id, String title, String description, int releaseYear, int languageId, String rating)
+			throws SQLException { // , List<Actor>actors) {
 		super();
+		this.id = id;
 		this.title = title;
 		this.description = description;
+		this.languageId = languageId;
 		this.rating = rating;
 		this.releaseYear = releaseYear;
 	}
@@ -47,6 +60,12 @@ public class Film {
 
 	public void setId(int id) {
 		this.id = id;
+			try {
+				this.actorsString = db.findActorsByFilmId(getId());
+			} catch (SQLException e) {
+			System.out.println("film line 66 exception");
+			}
+		
 	}
 
 	public String getTitle() {
@@ -137,7 +156,8 @@ public class Film {
 //	}
 	@Override
 	public String toString() {
-		return "\n" + title + ", "  + releaseYear + ", Rated " + rating + "\nSummary: " +  description  + "\n";
+		return "\n" + title + ", " + releaseYear + ", Rated " + rating + "\nSummary: " + description + "\nActors Present: "
+	+ actorsString + "\n";
 	}
 
 	@Override

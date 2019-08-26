@@ -1,10 +1,12 @@
 package com.skilldistillery.filmquery.app;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
+import com.skilldistillery.filmquery.entities.Actor;
 
 public class FilmQueryApp {
 
@@ -29,7 +31,7 @@ public class FilmQueryApp {
 	private void launch() throws SQLException {
 		Scanner input = new Scanner(System.in);
 
-		System.out.println("Welcome to the Film Query Pro Application!");
+		System.out.print("Film Database Search Utility");
 		startUserInterface(input);
 
 		input.close();
@@ -40,24 +42,26 @@ public class FilmQueryApp {
 		int choice = 0;
 		do {
 			System.out.println("\n");
-			System.out.println("Enter \"1\" to look up a movie by its ID#");
-			System.out.println("Enter \"2\" to look up movie by a keyword");
-			System.out.println("Enter \"3\" to exit the application.");
+			System.out.println("Press 1 to search films by ID #");
+			System.out.println("Press 2 to search database by keyword");
+			System.out.println("Press 3 to close");
 			try {
 				choice = input.nextInt();
 				switch (choice) {
 				case 1:
-					System.out.println("Please enter a movie's ID# to look it up!");
+					System.out.println("Enter movie ID # ");
 					int id = input.nextInt();
 					if (id > 1000 || id < 1) {
 						System.out.println("Our inventory contains 1000 titles, 1-1000. Try again.");
 					} else {
 						System.out.println(db.findFilmById(id));
+						System.out.println("Actors Present: ");
+						System.out.println(db.findActorsByFilmId(id));
 					}
 
 					break;
 				case 2:
-					System.out.println("Please enter a keyword to look up a movie");
+					System.out.println("Enter keyword: ");
 					try {
 						String keyword = input.next();
 						System.out.println(db.findFilmbyKeyword(keyword));
@@ -68,18 +72,18 @@ public class FilmQueryApp {
 					break;
 
 				case 3:
-					System.out.println("Exiting application");
+					System.out.println("Exiting utility...");
 
 					break;
 				default:
-					System.out.println("Please enter a valid option (extreme ints)");
+					System.out.println("Please enter a valid option"); //extreme ints
 					break;
 				}
 			} catch (Exception e1) {
-				System.out.println("Please enter a valid option (not int)");
+				System.out.println("Please enter a valid option"); //not ints
 				input.nextLine();
 			}
 		} while (choice != 3);
-		System.out.println("success");
+		System.out.println("Utility closed");
 	}
 }

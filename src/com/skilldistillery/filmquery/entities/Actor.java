@@ -50,7 +50,7 @@ public class Actor{
 	@Override
 	public String toString() {
 		
-		return "\n" + firstName + " " + lastName;
+		return firstName + " " + lastName;
 	}
 
 
