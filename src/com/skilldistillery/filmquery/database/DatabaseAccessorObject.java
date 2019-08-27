@@ -67,9 +67,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		if (film==null) {
-			System.out.println("No results found");
-		}
 		return film;
 	}
 

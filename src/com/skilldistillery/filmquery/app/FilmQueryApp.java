@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
+import com.skilldistillery.filmquery.entities.Film;
 
 public class FilmQueryApp {
 
@@ -52,8 +53,12 @@ public class FilmQueryApp {
 //					if (id > 1000 || id < 1) { // don't hardcode the values
 //						System.out.println("Our inventory contains 1000 titles, 1-1000. Try again.");
 //					} else {
-						System.out.println(db.findFilmById(id));
-//					}
+					Film film = db.findFilmById(id);
+					if(film == null) {
+						System.out.println("This film id was not found");
+					} else {
+					System.out.println(film);	
+					}
 
 					break;
 				case 2:
