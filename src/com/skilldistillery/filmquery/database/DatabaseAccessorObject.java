@@ -67,12 +67,15 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		if (film==null) {
+			System.out.println("No results found");
+		}
 		return film;
 	}
 
-	public Actor findActorById(int actorId) throws SQLException {
+	public Actor findActorById(int actorId){
 		Actor actor = null;
+		try {
 		Connection conn = DriverManager.getConnection(URL, userName, password);
 		String sql = "SELECT id, first_name, last_name " 
 				+ "FROM actor " 
@@ -89,14 +92,17 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		actorResult.close();
 		stmt.close();
 		conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return actor;
 	}
 
 	@Override
-	public List<Actor> findActorsByFilmId(int filmId) throws SQLException {
+	public List<Actor> findActorsByFilmId(int filmId){
 
 		List<Actor> actors = new ArrayList<Actor>();
-
+		try {
 		Connection conn = DriverManager.getConnection(URL, userName, password);
 		String sql = "SELECT actor.id, actor.first_name, actor.last_name" + "  "
 				+ "FROM film "
@@ -121,13 +127,16 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		actorResult.close();
 		stmt.close();
 		conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return actors;
 	}
 
 	@Override
-	public List<Film> findFilmbyKeyword(String keyword) throws SQLException {
+	public List<Film> findFilmbyKeyword(String keyword){
 		List<Film> films = new ArrayList<Film>();
-		
+		try {
 		Connection conn = DriverManager.getConnection(URL, userName, password);
 		
 		String sql = "SELECT film.id, title, description," + "release_year, language_id, rental_duration,"
@@ -152,11 +161,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		filmResult.close();
 		stmt.close();
 		conn.close();
+		}
 		
-		if (films.size() == 0) {
+		catch (SQLException e) {
 			System.out.println("No results found");
 		}
-		return films; 
+		return films;
 	}
 
 }

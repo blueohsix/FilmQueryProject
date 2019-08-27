@@ -49,11 +49,11 @@ public class FilmQueryApp {
 				case 1:
 					System.out.println("Enter movie ID # ");
 					int id = input.nextInt();
-					if (id > 1000 || id < 1) {
-						System.out.println("Our inventory contains 1000 titles, 1-1000. Try again.");
-					} else {
+//					if (id > 1000 || id < 1) { // don't hardcode the values
+//						System.out.println("Our inventory contains 1000 titles, 1-1000. Try again.");
+//					} else {
 						System.out.println(db.findFilmById(id));
-					}
+//					}
 
 					break;
 				case 2:
